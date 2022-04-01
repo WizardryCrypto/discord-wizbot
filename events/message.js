@@ -1,5 +1,6 @@
 const xpCooldown = {},
 	cmdCooldown = {};
+const whitelist = require("../helpers/whitelist.js");
 
 module.exports = class {
 	constructor (client) {
@@ -117,6 +118,34 @@ module.exports = class {
 				}
 			});
 
+		}
+
+		// Whitelist
+		if(message.guild){
+			// Check if message is in #whitelist channel
+			if(message.channel.id == "959294102514573375"){
+				// Check if user is already @whitelisted
+				if (!message.member.roles.cache.find(role => role.name === "Whitelisted")){
+					// Check if message is valid wallet
+					const isAddress = await whitelist.checkMessageFormat(message.content);
+					
+					if(isAddress){
+						// Write data to logfiles
+						await whitelist.writeWhitelist(message.author.username, message.author.id, message.id, message.content);
+						message.react("⚪");
+
+						// Give role
+						const role = message.guild.roles.cache.find(role => role.name === "Whitelisted");
+						message.member.roles.add(role);
+					} else {
+						// Show message only viewable to user, Delete message
+						message.delete();
+					}
+				} else {
+					// Delete message
+					message.delete();
+				}
+			}
 		}
 
 		// Gets the prefix

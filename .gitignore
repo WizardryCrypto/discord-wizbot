@@ -22,3 +22,14 @@ report*.json
 
 # IDE
 .vscode
+
+# Logs
+pm2_logging.log
+pm2_error.log
+
+# Whitelist
+whitelist.txt
+whitelist-manifest.json
+
+# Private
+private

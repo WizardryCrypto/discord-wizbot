@@ -8,7 +8,8 @@
         "stop": "pm2 stop pm2.config.js",
         "restart": "pm2 restart pm2.config.js",
         "lint": "eslint . --ext .js",
-        "testcfg": "node scripts/verify-config.js"
+        "testcfg": "node scripts/verify-config.js",
+        "initSubmodule": "git submodule update --init"
     },
     "repository": {
         "type": "git",

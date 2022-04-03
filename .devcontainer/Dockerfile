@@ -11,8 +11,11 @@ RUN . /etc/os-release \
         && apt-get update && export DEBIAN_FRONTEND=noninteractive \
         && apt-get install -y mongodb-database-tools mongodb-mongosh \
         && apt-get install -y python build-essential ffmpeg \
+        && apt-get install -y tzdata \
         && apt-get clean -y && rm -rf /var/lib/apt/lists/*; \
     fi
+
+ENV TZ="America/Chicago"
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

@@ -44,8 +44,8 @@ function gitMonitorSubmodule() {
     echo
     echo "Git | Monitor | wcData"
     cd $SUBMODULE
-    inotifywait --exclude ".swp" -m -r -e CLOSE_WRITE \
-    --format="git add . && git commit -m 'Whitelist - Update' && git push origin discord-wizbot" \
+    inotifywait --exclude ".swp|\.log|monitor.txt" -m -r -e CLOSE_WRITE \
+    --format="git add ./whitelist/ && git commit -m 'Whitelist - Update' && git push origin discord-wizbot" \
     "${WHITELIST_DIR}" | bash >> "$LOGS_DIR/monitor.txt" &
 }
 

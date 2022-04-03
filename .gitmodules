@@ -1,0 +1,4 @@
+[submodule "wcData"]
+	path = wcData
+	url = https://github.com/WizardryCrypto/wcData.git
+	branch = discord-wizbot

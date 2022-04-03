@@ -1,7 +1,16 @@
 const fs = require("fs");
 const Web3 = require("web3");
-const whitelistFile = "whitelist.txt";
-const whitelistManifestFile = "whitelist-manifest.json";
+const wcData = "./wcData";
+let whitelistFile;
+let whitelistManifestFile;
+
+if (fs.existsSync(wcData)) {
+	whitelistFile = `${wcData}/whitelist/whitelist.txt`;
+	whitelistManifestFile = `${wcData}/whitelist/whitelist-manifest.json`;
+} else {
+	whitelistFile = "./whitelist.txt";
+	whitelistManifestFile = "./whitelist-manifest.json";
+}
 
 const checkMessageFormat = async (message) => {
 	try {

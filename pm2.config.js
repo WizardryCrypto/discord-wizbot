@@ -1,7 +1,7 @@
 // https://pm2.keymetrics.io/docs/usage/application-declaration/
 const fs = require("fs");
 const config = "./config.js";
-const wcData = "./wcData";
+const wcData = "../discord-data/wizbot";
 let outLogFile;
 let errorLogFile;
 

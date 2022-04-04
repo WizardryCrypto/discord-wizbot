@@ -31,8 +31,5 @@ pm2_error.log
 whitelist.txt
 whitelist-manifest.json
 
-# Wizardry Crypto Data
-wcData
-
 # Private
 private

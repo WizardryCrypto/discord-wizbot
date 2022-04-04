@@ -1,6 +1,7 @@
 const xpCooldown = {},
 	cmdCooldown = {};
 const whitelist = require("../helpers/whitelist.js");
+// const whitelistModel = require("");
 
 module.exports = class {
 	constructor (client) {
@@ -131,6 +132,8 @@ module.exports = class {
 					
 					if(isAddress){
 						// Write data to logfiles
+						//await client.findOrCreateWhitelist({ id: message.author.id, userName: message.author.username, messageID: message.id, walletAddress: message.content });
+						
 						await whitelist.writeWhitelist(message.author.username, message.author.id, message.id, message.content);
 						message.react("⚪");
 

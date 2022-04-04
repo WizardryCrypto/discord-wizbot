@@ -43,6 +43,7 @@ class Atlanta extends Client {
 		this.guildsData = require("../base/Guild"); // Guild mongoose model
 		this.usersData = require("../base/User"); // User mongoose model
 		this.membersData = require("../base/Member"); // Member mongoose model
+		this.whitelistData = require("../base/Whitelist"); // Whitelist mongoose model
 		this.logs = require("../base/Log"); // Log mongoose model
 		this.dashboard = require("../dashboard/app"); // Dashboard app
 		this.queues = new Collection(); // This collection will be used for the music
@@ -53,6 +54,7 @@ class Atlanta extends Client {
 		this.databaseCache.users = new Collection();
 		this.databaseCache.guilds = new Collection();
 		this.databaseCache.members = new Collection();
+		this.databaseCache.whitelisted = new Collection();
 
 		this.databaseCache.usersReminds = new Collection(); // members with active reminds
 		this.databaseCache.mutedUsers = new Collection(); // members who are currently muted
@@ -287,7 +289,56 @@ class Atlanta extends Client {
 		}
 	}
 
-    
+	// This function is used to find a member data or create it
+	async findOrCreateWhitelist({ id: memberID, guildID, userName, messageID, walletAddress}, isLean){		
+		const whitelistModel = this.whitelistData;
+
+		function getNextEntry(memberID){
+			const entryDocument = this.databaseCache.whitelisted.findAndModify({
+				query:{ id: memberID },
+				update: { $inc:{ entryCounter:1 } },
+				new:true
+			});
+			return entryDocument.entryCounter;
+		}
+		
+
+		let whitelistData;
+		const nextEntry = getNextEntry(memberID);
+		try {
+			whitelistData = await whitelistModel.findOne({ id: memberID });
+			if (!whitelistData) {
+				const whitelist = await whitelistModel.create({
+					id: memberID,
+					guildID: guildID,
+					username: userName,
+					messageID: messageID,
+					walletAddress: walletAddress,
+					entryCounter: nextEntry,
+				});
+				await whitelist.save();
+				this.databaseCache.whitelist.set(memberID, whitelistData);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+
+		// if(this.databaseCache.whitelisted.get(`${memberID}${walletAddress}`)){
+		// 	return isLean ? this.databaseCache.whitelisted.get(`${memberID}${walletAddress}`).toJSON() : this.databaseCache.whitelisted.get(`${memberID}${walletAddress}`);
+		// } else {
+		// 	let whitelistedData = (isLean ? await this.whitelistedData.findOne({ walletAddress, id: memberID }).lean() : await this.whitelistedData.findOne({ walletAddress, id: memberID }));
+		// 	if(whitelistedData){
+		// 		if(!isLean) this.databaseCache.whitelisted.set(`${memberID}${walletAddress}`, whitelistedData);
+		// 		return whitelistedData;
+		// 	} else {
+		// 		whitelistedData = new this.whitelistedData({ id: message.auther.id, userName: message.author.username, messageID: message.id, walletAddress: message.content });
+		// 		await whitelistedData.save();
+		// 		this.databaseCache.whitelisted.set(`${memberID}${walletAddress}`, whitelistedData);
+		// 		return isLean ? whitelistedData.toJSON() : whitelistedData;
+		// 	}
+		// }
+	}
+
 	// This function is used to resolve a user from a string
 	async resolveUser(search){
 		let user = null;

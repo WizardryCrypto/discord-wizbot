@@ -1,6 +1,6 @@
 const fs = require("fs");
 const Web3 = require("web3");
-const wcData = "./wcData";
+const wcData = "../discord-data/wizbot";
 let whitelistFile;
 let whitelistManifestFile;
 

@@ -24,12 +24,10 @@ report*.json
 .vscode
 
 # Logs
-pm2_output.log
-pm2_error.log
+logs
 
 # Whitelist
-whitelist.txt
-whitelist-manifest.json
+whitelist
 
 # Private
 private

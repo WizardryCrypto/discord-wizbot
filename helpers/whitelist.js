@@ -1,16 +1,7 @@
 const fs = require("fs");
 const Web3 = require("web3");
-const wcData = "../discord-data/wizbot";
-let whitelistFile;
-let whitelistManifestFile;
-
-if (fs.existsSync(wcData)) {
-	whitelistFile = `${wcData}/whitelist/whitelist.txt`;
-	whitelistManifestFile = `${wcData}/whitelist/whitelist-manifest.json`;
-} else {
-	whitelistFile = "./whitelist.txt";
-	whitelistManifestFile = "./whitelist-manifest.json";
-}
+const whitelistFile = "./whitelist/whitelist.txt";
+const whitelistManifestFile = "./whitelist/whitelist-manifest.json";
 
 const checkMessageFormat = async (message) => {
 	try {
